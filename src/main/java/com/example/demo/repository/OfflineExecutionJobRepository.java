@@ -56,15 +56,15 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
         LEFT JOIN applications app ON app.app_desc = oej.application_id
         LEFT JOIN spdw_server_inventory ssi ON app.id = ssi.application_id
         WHERE 
-            (:startTime::timestamp IS NULL OR oej.start_time = :startTime::timestamp)
-            AND (:processName::text IS NULL OR oej.process_name ILIKE '%' || :processName::text || '%')
-            AND (:title::text IS NULL OR oej.title ILIKE '%' || :title::text || '%')
-            AND (:releaseName::text IS NULL OR oej.release_name ILIKE '%' || :releaseName::text || '%')
-            AND (:envName::text IS NULL OR oej.env_name ILIKE '%' || :envName::text || '%')
-            AND (:categoryName::text IS NULL OR oej.category_name ILIKE '%' || :categoryName::text || '%')
-            AND (:appName::text IS NULL OR app.app_name ILIKE '%' || :appName::text || '%')
-            AND (:hostname::text IS NULL OR ssi.hostname ILIKE '%' || :hostname::text || '%')
-            AND (:region::text IS NULL OR ssi.region ILIKE '%' || :region::text || '%')
+            (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
+            AND (CAST(:processName AS text) IS NULL OR oej.process_name ILIKE '%' || CAST(:processName AS text) || '%')
+            AND (CAST(:title AS text) IS NULL OR oej.title ILIKE '%' || CAST(:title AS text) || '%')
+            AND (CAST(:releaseName AS text) IS NULL OR oej.release_name ILIKE '%' || CAST(:releaseName AS text) || '%')
+            AND (CAST(:envName AS text) IS NULL OR oej.env_name ILIKE '%' || CAST(:envName AS text) || '%')
+            AND (CAST(:categoryName AS text) IS NULL OR oej.category_name ILIKE '%' || CAST(:categoryName AS text) || '%')
+            AND (CAST(:appName AS text) IS NULL OR app.app_name ILIKE '%' || CAST(:appName AS text) || '%')
+            AND (CAST(:hostname AS text) IS NULL OR ssi.hostname ILIKE '%' || CAST(:hostname AS text) || '%')
+            AND (CAST(:region AS text) IS NULL OR ssi.region ILIKE '%' || CAST(:region AS text) || '%')
         ORDER BY oej.creation_time DESC
         """, nativeQuery = true)
     List<Object[]> searchJobsWithDetails(
