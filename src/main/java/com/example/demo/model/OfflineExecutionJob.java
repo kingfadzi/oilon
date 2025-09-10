@@ -24,8 +24,8 @@ public class OfflineExecutionJob {
     private String process_name;
     private String tag_name;
     private String title;
-    private Integer major;
-    private Integer minor;
+    private String major;
+    private String minor;
     private String release_name;
     private String release_version;
     private Long calculation_time;
