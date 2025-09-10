@@ -54,7 +54,7 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
             ssi.building
         FROM offline_execution_jobs oej
         LEFT JOIN applications app ON app.app_desc = oej.application_id
-        LEFT JOIN spdw_server_inventory ssi ON app.id = ssi.application_id
+        LEFT JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
         WHERE 
             (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
             AND (CAST(:processName AS text) IS NULL OR oej.process_name ILIKE '%' || CAST(:processName AS text) || '%')

@@ -88,10 +88,10 @@ public class ApiService {
         
         // OfflineExecutionJob fields
         dto.setId(row[0] != null ? ((Number) row[0]).longValue() : null);
-        dto.setCreation_time((LocalDateTime) row[1]);
-        dto.setStart_time((LocalDateTime) row[2]);
-        dto.setEnd_time((LocalDateTime) row[3]);
-        dto.setLast_distribution_time((LocalDateTime) row[4]);
+        dto.setCreation_time(row[1] != null ? ((java.sql.Timestamp) row[1]).toLocalDateTime() : null);
+        dto.setStart_time(row[2] != null ? ((java.sql.Timestamp) row[2]).toLocalDateTime() : null);
+        dto.setEnd_time(row[3] != null ? ((java.sql.Timestamp) row[3]).toLocalDateTime() : null);
+        dto.setLast_distribution_time(row[4] != null ? ((java.sql.Timestamp) row[4]).toLocalDateTime() : null);
         dto.setFlow_id((String) row[5]);
         dto.setProcess_name((String) row[6]);
         dto.setTag_name((String) row[7]);
