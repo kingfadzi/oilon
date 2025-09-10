@@ -1,0 +1,123 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-09-09T20:15:00.000Z",
+  "__export_source": "gemini-cli",
+  "resources": [
+    {
+      "_id": "wrk_1",
+      "parentId": null,
+      "modified": 1678886400000,
+      "created": 1678886400000,
+      "name": "Oilon API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_1",
+      "parentId": "wrk_1",
+      "modified": 1678886400000,
+      "created": 1678886400000,
+      "url": "{{ base_url }}/api/applications/search",
+      "name": "Search Applications",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "appName",
+          "value": "Billing Engine",
+          "disabled": false
+        },
+        {
+          "name": "appDesc",
+          "value": "billing",
+          "disabled": true
+        },
+        {
+          "name": "id",
+          "value": "1",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1678886400000,
+      "_type": "request"
+    },
+    {
+      "_id": "req_2",
+      "parentId": "wrk_1",
+      "modified": 1678886400000,
+      "created": 1678886400000,
+      "url": "{{ base_url }}/api/offline-execution-jobs/search",
+      "name": "Search Offline Execution Jobs",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "processName",
+          "value": "Invoicing",
+          "disabled": false
+        },
+        {
+          "name": "envName",
+          "value": "production",
+          "disabled": false
+        },
+        {
+          "name": "startTime",
+          "value": "",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1678886300000,
+      "_type": "request"
+    },
+    {
+      "_id": "req_3",
+      "parentId": "wrk_1",
+      "modified": 1678886500000,
+      "created": 1678886500000,
+      "url": "{{ base_url }}/api/jobs/search-by-app",
+      "name": "Search Jobs by Application Name",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "appName",
+          "value": "Billing Engine",
+          "disabled": false
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1678886200000,
+      "_type": "request"
+    },
+    {
+      "_id": "env_1",
+      "parentId": "wrk_1",
+      "modified": 1678886400000,
+      "created": 1678886400000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1678886400000,
+      "_type": "environment"
+    }
+  ]
+}
