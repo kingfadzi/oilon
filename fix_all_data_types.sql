@@ -17,4 +17,4 @@ ALTER TABLE offline_execution_jobs
 
 -- Alter 'spdw_server_inventory' table
 ALTER TABLE spdw_server_inventory
-    ALTER COLUMN application_id TYPE INTEGER USING application_id::integer;
+    ALTER COLUMN application_id TYPE VARCHAR USING application_id::varchar;
