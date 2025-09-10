@@ -56,15 +56,15 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
         LEFT JOIN applications app ON app.app_desc = oej.application_id
         LEFT JOIN spdw_server_inventory ssi ON app.id = ssi.application_id
         WHERE 
-            (:startTime IS NULL OR oej.start_time = :startTime)
-            AND (:processName IS NULL OR oej.process_name ILIKE '%' || :processName || '%')
-            AND (:title IS NULL OR oej.title ILIKE '%' || :title || '%')
-            AND (:releaseName IS NULL OR oej.release_name ILIKE '%' || :releaseName || '%')
-            AND (:envName IS NULL OR oej.env_name ILIKE '%' || :envName || '%')
-            AND (:categoryName IS NULL OR oej.category_name ILIKE '%' || :categoryName || '%')
-            AND (:appName IS NULL OR app.app_name ILIKE '%' || :appName || '%')
-            AND (:hostname IS NULL OR ssi.hostname ILIKE '%' || :hostname || '%')
-            AND (:region IS NULL OR ssi.region ILIKE '%' || :region || '%')
+            (:startTime::timestamp IS NULL OR oej.start_time = :startTime::timestamp)
+            AND (:processName::text IS NULL OR oej.process_name ILIKE '%' || :processName::text || '%')
+            AND (:title::text IS NULL OR oej.title ILIKE '%' || :title::text || '%')
+            AND (:releaseName::text IS NULL OR oej.release_name ILIKE '%' || :releaseName::text || '%')
+            AND (:envName::text IS NULL OR oej.env_name ILIKE '%' || :envName::text || '%')
+            AND (:categoryName::text IS NULL OR oej.category_name ILIKE '%' || :categoryName::text || '%')
+            AND (:appName::text IS NULL OR app.app_name ILIKE '%' || :appName::text || '%')
+            AND (:hostname::text IS NULL OR ssi.hostname ILIKE '%' || :hostname::text || '%')
+            AND (:region::text IS NULL OR ssi.region ILIKE '%' || :region::text || '%')
         ORDER BY oej.creation_time DESC
         """, nativeQuery = true)
     List<Object[]> searchJobsWithDetails(
