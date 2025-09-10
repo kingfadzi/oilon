@@ -13,6 +13,7 @@ ALTER TABLE offline_execution_jobs
     ALTER COLUMN end_time TYPE TIMESTAMP USING end_time::timestamp,
     ALTER COLUMN last_distribution_time TYPE TIMESTAMP USING last_distribution_time::timestamp,
     ALTER COLUMN calculation_time TYPE BIGINT USING calculation_time::bigint,
+    ALTER COLUMN application_id TYPE BIGINT USING application_id::bigint;
 
 
 -- Alter 'spdw_server_inventory' table

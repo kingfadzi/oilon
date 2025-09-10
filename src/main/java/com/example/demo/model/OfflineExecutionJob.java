@@ -31,8 +31,10 @@ public class OfflineExecutionJob {
     private String release_version;
     private Long calculation_time;
 
+    private Long application_id;
+
     @ManyToOne
-    @JoinColumn(name = "application_id", insertable=false, updatable=false)
+    @JoinColumn(name = "application_id", insertable = false, updatable = false)
     private Application application;
 
     private String application_name;
