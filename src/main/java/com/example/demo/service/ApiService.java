@@ -6,6 +6,9 @@ import com.example.demo.model.OfflineExecutionJob;
 import com.example.demo.repository.ApplicationRepository;
 import com.example.demo.repository.OfflineExecutionJobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,7 @@ public class ApiService {
     @Autowired
     private OfflineExecutionJobRepository offlineExecutionJobRepository;
 
-    public List<Application> searchApplications(String appName, String appDesc, Long id) {
+    public Page<Application> searchApplications(String appName, String appDesc, Long id, Pageable pageable) {
         Specification<Application> spec = Specification.where(null);
 
         if (appName != null) {
@@ -35,10 +38,10 @@ public class ApiService {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("Id"), id));
         }
 
-        return applicationRepository.findAll(spec);
+        return applicationRepository.findAll(spec, pageable);
     }
 
-    public List<OfflineExecutionJob> searchOfflineExecutionJobs(LocalDateTime startTime, String processName, String title, String releaseName, String envName, String categoryName) {
+    public Page<OfflineExecutionJob> searchOfflineExecutionJobs(LocalDateTime startTime, String processName, String title, String releaseName, String envName, String categoryName, Pageable pageable) {
         Specification<OfflineExecutionJob> spec = Specification.where(null);
 
         if (startTime != null) {
@@ -60,27 +63,31 @@ public class ApiService {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("category_name"), "%" + categoryName + "%"));
         }
 
-        return offlineExecutionJobRepository.findAll(spec);
+        return offlineExecutionJobRepository.findAll(spec, pageable);
     }
 
-    public List<OfflineExecutionJob> searchJobsByApplication(String appName) {
+    public Page<OfflineExecutionJob> searchJobsByApplication(String appName, Pageable pageable) {
         Specification<OfflineExecutionJob> spec = (root, query, criteriaBuilder) -> {
             if (appName != null) {
                 return criteriaBuilder.like(root.get("application").get("app_name"), "%" + appName + "%");
             }
             return criteriaBuilder.conjunction();
         };
-        return offlineExecutionJobRepository.findAll(spec);
+        return offlineExecutionJobRepository.findAll(spec, pageable);
     }
     
-    public List<JobSearchResultDTO> searchJobsWithDetails(LocalDateTime startTime, String processName, String title, 
+    public Page<JobSearchResultDTO> searchJobsWithDetails(LocalDateTime startTime, String processName, String title, 
                                                           String releaseName, String envName, String categoryName,
-                                                          String appName, String hostname, String region) {
-        List<Object[]> results = offlineExecutionJobRepository.searchJobsWithDetails(
-            startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
+                                                          String appName, String hostname, String region, Pageable pageable) {
+        Page<Object[]> results = offlineExecutionJobRepository.searchJobsWithDetails(
+            startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region, pageable
         );
         
-        return results.stream().map(this::mapToJobSearchResultDTO).collect(Collectors.toList());
+        List<JobSearchResultDTO> dtoList = results.getContent().stream()
+            .map(this::mapToJobSearchResultDTO)
+            .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtoList, pageable, results.getTotalElements());
     }
     
     private JobSearchResultDTO mapToJobSearchResultDTO(Object[] row) {

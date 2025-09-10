@@ -2,6 +2,8 @@ package com.example.demo.repository;
 
 import com.example.demo.dto.JobSearchResultDTO;
 import com.example.demo.model.OfflineExecutionJob;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -66,8 +68,25 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
             AND (CAST(:hostname AS text) IS NULL OR ssi.hostname ILIKE '%' || CAST(:hostname AS text) || '%')
             AND (CAST(:region AS text) IS NULL OR ssi.region ILIKE '%' || CAST(:region AS text) || '%')
         ORDER BY oej.creation_time DESC
-        """, nativeQuery = true)
-    List<Object[]> searchJobsWithDetails(
+        """, 
+        countQuery = """
+        SELECT COUNT(*)
+        FROM offline_execution_jobs oej
+        LEFT JOIN applications app ON app.app_desc = oej.application_id
+        LEFT JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
+        WHERE 
+            (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
+            AND (CAST(:processName AS text) IS NULL OR oej.process_name ILIKE '%' || CAST(:processName AS text) || '%')
+            AND (CAST(:title AS text) IS NULL OR oej.title ILIKE '%' || CAST(:title AS text) || '%')
+            AND (CAST(:releaseName AS text) IS NULL OR oej.release_name ILIKE '%' || CAST(:releaseName AS text) || '%')
+            AND (CAST(:envName AS text) IS NULL OR oej.env_name ILIKE '%' || CAST(:envName AS text) || '%')
+            AND (CAST(:categoryName AS text) IS NULL OR oej.category_name ILIKE '%' || CAST(:categoryName AS text) || '%')
+            AND (CAST(:appName AS text) IS NULL OR app.app_name ILIKE '%' || CAST(:appName AS text) || '%')
+            AND (CAST(:hostname AS text) IS NULL OR ssi.hostname ILIKE '%' || CAST(:hostname AS text) || '%')
+            AND (CAST(:region AS text) IS NULL OR ssi.region ILIKE '%' || CAST(:region AS text) || '%')
+        """,
+        nativeQuery = true)
+    Page<Object[]> searchJobsWithDetails(
         @Param("startTime") LocalDateTime startTime,
         @Param("processName") String processName,
         @Param("title") String title,
@@ -76,6 +95,7 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
         @Param("categoryName") String categoryName,
         @Param("appName") String appName,
         @Param("hostname") String hostname,
-        @Param("region") String region
+        @Param("region") String region,
+        Pageable pageable
     );
 }
