@@ -25,7 +25,6 @@ public class JobSearchResultDTO {
     private String minor;
     private String release_name;
     private String release_version;
-    private Long calculation_time;
     private String application_name;
     private Integer architecture_id;
     private Integer system_id;

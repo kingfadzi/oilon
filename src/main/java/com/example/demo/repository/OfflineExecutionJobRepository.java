@@ -27,7 +27,6 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
             oej.minor,
             oej.release_name,
             oej.release_version,
-            oej.calculation_time,
             oej.application_name,
             oej.architecture_id,
             oej.system_id,

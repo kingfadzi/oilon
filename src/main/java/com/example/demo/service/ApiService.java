@@ -100,36 +100,35 @@ public class ApiService {
         dto.setMinor((String) row[10]);
         dto.setRelease_name((String) row[11]);
         dto.setRelease_version((String) row[12]);
-        dto.setCalculation_time(row[13] != null ? ((Number) row[13]).longValue() : null);
-        dto.setApplication_name((String) row[14]);
-        dto.setArchitecture_id(row[15] != null ? ((Number) row[15]).intValue() : null);
-        dto.setSystem_id(row[16] != null ? ((Number) row[16]).intValue() : null);
-        dto.setEnv_name((String) row[17]);
-        dto.setCategory_id(row[18] != null ? ((Number) row[18]).intValue() : null);
-        dto.setCategory_name((String) row[19]);
-        dto.setCustomer_id(row[20] != null ? ((Number) row[20]).intValue() : null);
-        dto.setCreator_username((String) row[21]);
-        dto.setManifest((String) row[22]);
+        dto.setApplication_name((String) row[13]);
+        dto.setArchitecture_id(row[14] != null ? ((Number) row[14]).intValue() : null);
+        dto.setSystem_id(row[15] != null ? ((Number) row[15]).intValue() : null);
+        dto.setEnv_name((String) row[16]);
+        dto.setCategory_id(row[17] != null ? ((Number) row[17]).intValue() : null);
+        dto.setCategory_name((String) row[18]);
+        dto.setCustomer_id(row[19] != null ? ((Number) row[19]).intValue() : null);
+        dto.setCreator_username((String) row[20]);
+        dto.setManifest((String) row[21]);
         
         // Application fields
-        dto.setApp_name((String) row[23]);
-        dto.setApp_desc((String) row[24]);
-        dto.setApp_version((String) row[25]);
-        dto.setApp_uuid((String) row[26]);
+        dto.setApp_name((String) row[22]);
+        dto.setApp_desc((String) row[23]);
+        dto.setApp_version((String) row[24]);
+        dto.setApp_uuid((String) row[25]);
         
         // Server inventory fields
-        dto.setHostname((String) row[27]);
-        dto.setBusiness_line_group_company((String) row[28]);
-        dto.setBusiness_line((String) row[29]);
-        dto.setApplication_instance_environment((String) row[30]);
-        dto.setOs_name((String) row[31]);
-        dto.setServer_type((String) row[32]);
-        dto.setLifecycle((String) row[33]);
-        dto.setLifecycle_sub_status((String) row[34]);
-        dto.setRegion((String) row[35]);
-        dto.setCountry((String) row[36]);
-        dto.setCity((String) row[37]);
-        dto.setBuilding((String) row[38]);
+        dto.setHostname((String) row[26]);
+        dto.setBusiness_line_group_company((String) row[27]);
+        dto.setBusiness_line((String) row[28]);
+        dto.setApplication_instance_environment((String) row[29]);
+        dto.setOs_name((String) row[30]);
+        dto.setServer_type((String) row[31]);
+        dto.setLifecycle((String) row[32]);
+        dto.setLifecycle_sub_status((String) row[33]);
+        dto.setRegion((String) row[34]);
+        dto.setCountry((String) row[35]);
+        dto.setCity((String) row[36]);
+        dto.setBuilding((String) row[37]);
         
         return dto;
     }
