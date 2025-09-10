@@ -56,7 +56,7 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
             ssi.building
         FROM applications app
         INNER JOIN offline_execution_jobs oej ON app.Id = oej.application_id
-        INNER JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
+        LEFT JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
         WHERE 
             (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
             AND (CAST(:processName AS text) IS NULL OR oej.process_name ILIKE '%' || CAST(:processName AS text) || '%')
@@ -73,7 +73,7 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
         SELECT COUNT(*)
         FROM applications app
         INNER JOIN offline_execution_jobs oej ON app.Id = oej.application_id
-        INNER JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
+        LEFT JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
         WHERE 
             (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
             AND (CAST(:processName AS text) IS NULL OR oej.process_name ILIKE '%' || CAST(:processName AS text) || '%')
