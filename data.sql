@@ -1,8 +1,8 @@
 -- Dummy data for applications table
 INSERT INTO applications (uuid, app_name, app_desc, version, params_folder_id, is_express, issharedlibrary, delete_status) VALUES
-('a1b2c3d4-e5f6-4890-8234-567890abcdef', 'Billing Engine', 'Handles all billing and invoicing.', '1.2.3', 101, true, false, 'ACTIVE'),
-('b2c3d4e5-f6a7-4901-9345-67890abcdef1', 'CRM Suite', 'Customer Relationship Management tools.', '2.0.1', 102, false, false, 'ACTIVE'),
-('c3d4e5f6-a7b8-4012-a456-7890abcdef12', 'Logistics Manager', 'Coordinates shipping and receiving.', '3.5.0', 103, true, true, 'INACTIVE');
+('a1b2c3d4-e5f6-4890-8234-567890abcdef'::uuid, 'Billing Engine', 'Handles all billing and invoicing.', '1.2.3', 101, true, false, 'ACTIVE'),
+('b2c3d4e5-f6a7-4901-9345-67890abcdef1'::uuid, 'CRM Suite', 'Customer Relationship Management tools.', '2.0.1', 102, false, false, 'ACTIVE'),
+('c3d4e5f6-a7b8-4012-a456-7890abcdef12'::uuid, 'Logistics Manager', 'Coordinates shipping and receiving.', '3.5.0', 103, true, true, 'INACTIVE');
 
 -- Dummy data for offline_execution_jobs table
 -- Note: Assumes the applications above were inserted with Ids 1, 2, 3 respectively.
