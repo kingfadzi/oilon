@@ -55,3 +55,29 @@ CREATE TABLE spdw_server_inventory (
     city VARCHAR(255),
     building VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS spdw_vwsfbusinessapplication (
+    business_application_name VARCHAR(255) NOT NULL,
+    correlation_id VARCHAR(100),
+    active BOOLEAN,
+    owning_transaction_cycle VARCHAR(255),
+    owning_transaction_cycle_id VARCHAR(100),
+    resilience_category VARCHAR(100),
+    operational_status VARCHAR(50),
+    application_type VARCHAR(100),
+    architecture_type VARCHAR(100),
+    install_type VARCHAR(50),
+    application_parent VARCHAR(255),
+    application_parent_correlation_id VARCHAR(100),
+    house_position VARCHAR(100),
+    cease_date DATE,
+    business_application_sys_id VARCHAR(100),
+    application_tier TEXT,
+    application_product_owner TEXT,
+    system_architect TEXT,
+    application_product_owner_brid TEXT,
+    system_architect_brid TEXT,
+    architecture_hosting TEXT,
+    CONSTRAINT vwsfbusinessapplication_pkey PRIMARY KEY (business_application_name),
+    CONSTRAINT vwsfbusinessapplication_correlation_id_key UNIQUE (correlation_id)
+);

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ApplicationOwnershipDTO;
 import com.example.demo.dto.JobSearchResultDTO;
 import com.example.demo.model.Application;
 import com.example.demo.model.OfflineExecutionJob;
@@ -61,5 +62,38 @@ public class ApiController {
             @RequestParam(required = false) String region,
             Pageable pageable) {
         return apiService.searchJobsWithDetails(startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region, pageable);
+    }
+    
+    @GetMapping("/applications/ownership")
+    public Page<ApplicationOwnershipDTO> searchApplicationsWithOwnership(
+            @RequestParam(required = false) String appName,
+            @RequestParam(required = false) String businessAppId,
+            @RequestParam(required = false) String applicationType,
+            @RequestParam(required = false) String productOwner,
+            @RequestParam(required = false) String systemArchitect,
+            @RequestParam(required = false) String operationalStatus,
+            @RequestParam(required = false) String architectureType,
+            @RequestParam(required = false) String businessApplicationName,
+            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) String owningTransactionCycle,
+            @RequestParam(required = false) String owningTransactionCycleId,
+            @RequestParam(required = false) String resilienceCategory,
+            @RequestParam(required = false) String installType,
+            @RequestParam(required = false) String applicationParent,
+            @RequestParam(required = false) String applicationParentCorrelationId,
+            @RequestParam(required = false) String housePosition,
+            @RequestParam(required = false) String businessApplicationSysId,
+            @RequestParam(required = false) String applicationTier,
+            @RequestParam(required = false) String applicationProductOwnerBrid,
+            @RequestParam(required = false) String systemArchitectBrid,
+            @RequestParam(required = false) String architectureHosting,
+            Pageable pageable) {
+        return apiService.searchApplicationsWithOwnership(appName, businessAppId, applicationType, productOwner, 
+                                                         systemArchitect, operationalStatus, architectureType, 
+                                                         businessApplicationName, active, owningTransactionCycle,
+                                                         owningTransactionCycleId, resilienceCategory, installType,
+                                                         applicationParent, applicationParentCorrelationId, housePosition,
+                                                         businessApplicationSysId, applicationTier, applicationProductOwnerBrid,
+                                                         systemArchitectBrid, architectureHosting, pageable);
     }
 }

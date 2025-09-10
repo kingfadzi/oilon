@@ -163,6 +163,143 @@
       "_type": "request"
     },
     {
+      "_id": "req_5",
+      "parentId": "wrk_1",
+      "modified": 1678886700000,
+      "created": 1678886700000,
+      "url": "{{ base_url }}/api/applications/ownership",
+      "name": "Search Applications with Ownership",
+      "description": "Search applications with business application ownership data from all tables",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "appName",
+          "value": "Billing",
+          "disabled": false
+        },
+        {
+          "name": "businessAppId", 
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "applicationType",
+          "value": "Enterprise",
+          "disabled": true
+        },
+        {
+          "name": "productOwner",
+          "value": "John Smith",
+          "disabled": true
+        },
+        {
+          "name": "systemArchitect",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "operationalStatus",
+          "value": "Active",
+          "disabled": true
+        },
+        {
+          "name": "architectureType",
+          "value": "Microservices",
+          "disabled": true
+        },
+        {
+          "name": "businessApplicationName",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "active",
+          "value": "true",
+          "disabled": true
+        },
+        {
+          "name": "owningTransactionCycle",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "owningTransactionCycleId",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "resilienceCategory",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "installType",
+          "value": "Cloud",
+          "disabled": true
+        },
+        {
+          "name": "applicationParent",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "applicationParentCorrelationId",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "housePosition",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "businessApplicationSysId",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "applicationTier",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "applicationProductOwnerBrid",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "systemArchitectBrid",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "architectureHosting",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "page",
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "name": "size",
+          "value": "10",
+          "disabled": true
+        },
+        {
+          "name": "sort",
+          "value": "app_name,asc",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1678886000000,
+      "_type": "request"
+    },
+    {
       "_id": "env_1",
       "parentId": "wrk_1",
       "modified": 1678886400000,

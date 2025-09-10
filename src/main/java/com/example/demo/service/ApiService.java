@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ApplicationOwnershipDTO;
 import com.example.demo.dto.JobSearchResultDTO;
 import com.example.demo.model.Application;
 import com.example.demo.model.OfflineExecutionJob;
@@ -88,6 +89,71 @@ public class ApiService {
             .collect(Collectors.toList());
         
         return new PageImpl<>(dtoList, pageable, results.getTotalElements());
+    }
+    
+    public Page<ApplicationOwnershipDTO> searchApplicationsWithOwnership(String appName, String businessAppId, 
+                                                                         String applicationType, String productOwner,
+                                                                         String systemArchitect, String operationalStatus,
+                                                                         String architectureType, String businessApplicationName,
+                                                                         Boolean active, String owningTransactionCycle,
+                                                                         String owningTransactionCycleId, String resilienceCategory, String installType,
+                                                                         String applicationParent, String applicationParentCorrelationId, 
+                                                                         String housePosition, String businessApplicationSysId, String applicationTier,
+                                                                         String applicationProductOwnerBrid, String systemArchitectBrid, 
+                                                                         String architectureHosting, Pageable pageable) {
+        Page<Object[]> results = applicationRepository.searchApplicationsWithOwnership(
+            appName, businessAppId, applicationType, productOwner, systemArchitect, 
+            operationalStatus, architectureType, businessApplicationName, active,
+            owningTransactionCycle, owningTransactionCycleId, resilienceCategory, installType,
+            applicationParent, applicationParentCorrelationId, housePosition, businessApplicationSysId,
+            applicationTier, applicationProductOwnerBrid, systemArchitectBrid, architectureHosting, pageable
+        );
+        
+        List<ApplicationOwnershipDTO> dtoList = results.getContent().stream()
+            .map(this::mapToApplicationOwnershipDTO)
+            .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtoList, pageable, results.getTotalElements());
+    }
+    
+    private ApplicationOwnershipDTO mapToApplicationOwnershipDTO(Object[] row) {
+        ApplicationOwnershipDTO dto = new ApplicationOwnershipDTO();
+        
+        // Application fields
+        dto.setId(row[0] != null ? ((Number) row[0]).longValue() : null);
+        dto.setUuid((String) row[1]);
+        dto.setApp_name((String) row[2]);
+        dto.setBusiness_app_id((String) row[3]);
+        dto.setVersion((String) row[4]);
+        dto.setParams_folder_id(row[5] != null ? ((Number) row[5]).intValue() : null);
+        dto.setIs_express((Boolean) row[6]);
+        dto.setIssharedlibrary((Boolean) row[7]);
+        dto.setDelete_status((String) row[8]);
+        
+        // Business Application (Ownership) fields
+        dto.setBusiness_application_name((String) row[9]);
+        dto.setCorrelation_id((String) row[10]);
+        dto.setActive((Boolean) row[11]);
+        dto.setOwning_transaction_cycle((String) row[12]);
+        dto.setOwning_transaction_cycle_id((String) row[13]);
+        dto.setResilience_category((String) row[14]);
+        dto.setOperational_status((String) row[15]);
+        dto.setApplication_type((String) row[16]);
+        dto.setArchitecture_type((String) row[17]);
+        dto.setInstall_type((String) row[18]);
+        dto.setApplication_parent((String) row[19]);
+        dto.setApplication_parent_correlation_id((String) row[20]);
+        dto.setHouse_position((String) row[21]);
+        dto.setCease_date(row[22] != null ? ((java.sql.Date) row[22]).toLocalDate() : null);
+        dto.setBusiness_application_sys_id((String) row[23]);
+        dto.setApplication_tier((String) row[24]);
+        dto.setApplication_product_owner((String) row[25]);
+        dto.setSystem_architect((String) row[26]);
+        dto.setApplication_product_owner_brid((String) row[27]);
+        dto.setSystem_architect_brid((String) row[28]);
+        dto.setArchitecture_hosting((String) row[29]);
+        
+        return dto;
     }
     
     private JobSearchResultDTO mapToJobSearchResultDTO(Object[] row) {
