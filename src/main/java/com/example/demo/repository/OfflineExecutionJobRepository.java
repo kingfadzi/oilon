@@ -67,7 +67,7 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
             AND (CAST(:appName AS text) IS NULL OR app.app_name ILIKE '%' || CAST(:appName AS text) || '%')
             AND (CAST(:hostname AS text) IS NULL OR ssi.hostname ILIKE '%' || CAST(:hostname AS text) || '%')
             AND (CAST(:region AS text) IS NULL OR ssi.region ILIKE '%' || CAST(:region AS text) || '%')
-        ORDER BY oej.creation_time DESC
+        ORDER BY oej.start_time DESC
         """, 
         countQuery = """
         SELECT COUNT(*)
