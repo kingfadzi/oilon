@@ -54,8 +54,8 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
             ssi.country,
             ssi.city,
             ssi.building
-        FROM offline_execution_jobs oej
-        LEFT JOIN applications app ON app.app_desc = oej.application_id
+        FROM applications app
+        LEFT JOIN offline_execution_jobs oej ON app.app_desc = oej.application_id
         LEFT JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
         WHERE 
             (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
@@ -71,8 +71,8 @@ public interface OfflineExecutionJobRepository extends JpaRepository<OfflineExec
         """, 
         countQuery = """
         SELECT COUNT(*)
-        FROM offline_execution_jobs oej
-        LEFT JOIN applications app ON app.app_desc = oej.application_id
+        FROM applications app
+        LEFT JOIN offline_execution_jobs oej ON app.app_desc = oej.application_id
         LEFT JOIN spdw_server_inventory ssi ON app.app_desc = ssi.application_id
         WHERE 
             (CAST(:startTime AS timestamp) IS NULL OR oej.start_time = CAST(:startTime AS timestamp))
