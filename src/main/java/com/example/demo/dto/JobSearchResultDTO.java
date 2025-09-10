@@ -1,21 +1,17 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Table(name = "offline_execution_jobs")
-public class OfflineExecutionJob {
-
-    @Id
+@AllArgsConstructor
+@NoArgsConstructor
+public class JobSearchResultDTO {
+    
+    // OfflineExecutionJob fields
     private Long id;
     private LocalDateTime creation_time;
     private LocalDateTime start_time;
@@ -30,11 +26,6 @@ public class OfflineExecutionJob {
     private String release_name;
     private String release_version;
     private Long calculation_time;
-
-    @ManyToOne
-    @JoinColumn(name = "application_id", insertable=false, updatable=false)
-    private Application application;
-
     private String application_name;
     private Integer architecture_id;
     private Integer system_id;
@@ -45,6 +36,23 @@ public class OfflineExecutionJob {
     private String creator_username;
     private String manifest;
     
-    @JsonIgnore
-    private String parameterroot;
+    // Application fields
+    private String app_name;
+    private String app_desc;
+    private String app_version;
+    private String app_uuid;
+    
+    // Server inventory fields
+    private String hostname;
+    private String business_line_group_company;
+    private String business_line;
+    private String application_instance_environment;
+    private String os_name;
+    private String server_type;
+    private String lifecycle;
+    private String lifecycle_sub_status;
+    private String region;
+    private String country;
+    private String city;
+    private String building;
 }

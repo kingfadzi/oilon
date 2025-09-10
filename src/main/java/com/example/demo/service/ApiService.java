@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.JobSearchResultDTO;
 import com.example.demo.model.Application;
 import com.example.demo.model.OfflineExecutionJob;
 import com.example.demo.repository.ApplicationRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ApiService {
@@ -69,5 +71,66 @@ public class ApiService {
             return criteriaBuilder.conjunction();
         };
         return offlineExecutionJobRepository.findAll(spec);
+    }
+    
+    public List<JobSearchResultDTO> searchJobsWithDetails(LocalDateTime startTime, String processName, String title, 
+                                                          String releaseName, String envName, String categoryName,
+                                                          String appName, String hostname, String region) {
+        List<Object[]> results = offlineExecutionJobRepository.searchJobsWithDetails(
+            startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
+        );
+        
+        return results.stream().map(this::mapToJobSearchResultDTO).collect(Collectors.toList());
+    }
+    
+    private JobSearchResultDTO mapToJobSearchResultDTO(Object[] row) {
+        JobSearchResultDTO dto = new JobSearchResultDTO();
+        
+        // OfflineExecutionJob fields
+        dto.setId(row[0] != null ? ((Number) row[0]).longValue() : null);
+        dto.setCreation_time((LocalDateTime) row[1]);
+        dto.setStart_time((LocalDateTime) row[2]);
+        dto.setEnd_time((LocalDateTime) row[3]);
+        dto.setLast_distribution_time((LocalDateTime) row[4]);
+        dto.setFlow_id((String) row[5]);
+        dto.setProcess_name((String) row[6]);
+        dto.setTag_name((String) row[7]);
+        dto.setTitle((String) row[8]);
+        dto.setMajor((String) row[9]);
+        dto.setMinor((String) row[10]);
+        dto.setRelease_name((String) row[11]);
+        dto.setRelease_version((String) row[12]);
+        dto.setCalculation_time(row[13] != null ? ((Number) row[13]).longValue() : null);
+        dto.setApplication_name((String) row[14]);
+        dto.setArchitecture_id(row[15] != null ? ((Number) row[15]).intValue() : null);
+        dto.setSystem_id(row[16] != null ? ((Number) row[16]).intValue() : null);
+        dto.setEnv_name((String) row[17]);
+        dto.setCategory_id(row[18] != null ? ((Number) row[18]).intValue() : null);
+        dto.setCategory_name((String) row[19]);
+        dto.setCustomer_id(row[20] != null ? ((Number) row[20]).intValue() : null);
+        dto.setCreator_username((String) row[21]);
+        dto.setManifest((String) row[22]);
+        
+        // Application fields
+        dto.setApp_name((String) row[23]);
+        dto.setApp_desc((String) row[24]);
+        dto.setApp_version((String) row[25]);
+        dto.setApp_uuid((String) row[26]);
+        
+        // Server inventory fields
+        dto.setHostname((String) row[27]);
+        dto.setBusiness_line_group_company((String) row[28]);
+        dto.setBusiness_line((String) row[29]);
+        dto.setApplication_instance_environment((String) row[30]);
+        dto.setOs_name((String) row[31]);
+        dto.setServer_type((String) row[32]);
+        dto.setLifecycle((String) row[33]);
+        dto.setLifecycle_sub_status((String) row[34]);
+        dto.setRegion((String) row[35]);
+        dto.setCountry((String) row[36]);
+        dto.setCity((String) row[37]);
+        dto.setBuilding((String) row[38]);
+        
+        return dto;
     }
 }

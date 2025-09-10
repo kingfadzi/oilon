@@ -19,7 +19,7 @@
       "parentId": "wrk_1",
       "modified": 1678886400000,
       "created": 1678886400000,
-      "url": "{{ base_url }}/api/applications/search",
+      "url": "{{ base_url }}/api/applications",
       "name": "Search Applications",
       "description": "",
       "method": "GET",
@@ -51,8 +51,8 @@
       "parentId": "wrk_1",
       "modified": 1678886400000,
       "created": 1678886400000,
-      "url": "{{ base_url }}/api/offline-execution-jobs/search",
-      "name": "Search Offline Execution Jobs",
+      "url": "{{ base_url }}/api/jobs",
+      "name": "Search Jobs",
       "description": "",
       "method": "GET",
       "body": {},
@@ -83,8 +83,8 @@
       "parentId": "wrk_1",
       "modified": 1678886500000,
       "created": 1678886500000,
-      "url": "{{ base_url }}/api/jobs/search-by-app",
-      "name": "Search Jobs by Application Name",
+      "url": "{{ base_url }}/api/jobs/by-application",
+      "name": "Search Jobs by Application",
       "description": "",
       "method": "GET",
       "body": {},
@@ -98,6 +98,68 @@
       "headers": [],
       "authentication": {},
       "metaSortKey": -1678886200000,
+      "_type": "request"
+    },
+    {
+      "_id": "req_4",
+      "parentId": "wrk_1",
+      "modified": 1678886600000,
+      "created": 1678886600000,
+      "url": "{{ base_url }}/api/jobs/detailed",
+      "name": "Search Jobs with Full Details",
+      "description": "Comprehensive search that joins jobs, applications, and server inventory data",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "processName",
+          "value": "Invoicing",
+          "disabled": false
+        },
+        {
+          "name": "envName",
+          "value": "production",
+          "disabled": false
+        },
+        {
+          "name": "appName",
+          "value": "Billing Engine",
+          "disabled": true
+        },
+        {
+          "name": "hostname",
+          "value": "prod-billing-01",
+          "disabled": true
+        },
+        {
+          "name": "region",
+          "value": "NA",
+          "disabled": true
+        },
+        {
+          "name": "title",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "releaseName",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "categoryName",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "startTime",
+          "value": "",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1678886100000,
       "_type": "request"
     },
     {

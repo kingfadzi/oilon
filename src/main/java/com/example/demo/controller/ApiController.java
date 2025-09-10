@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.JobSearchResultDTO;
 import com.example.demo.model.Application;
 import com.example.demo.model.OfflineExecutionJob;
 import com.example.demo.service.ApiService;
@@ -20,14 +21,14 @@ public class ApiController {
     @Autowired
     private ApiService apiService;
 
-    @GetMapping("/applications/search")
+    @GetMapping("/applications")
     public List<Application> searchApplications(@RequestParam(required = false) String appName,
                                                 @RequestParam(required = false) String appDesc,
                                                 @RequestParam(required = false) Long id) {
         return apiService.searchApplications(appName, appDesc, id);
     }
 
-    @GetMapping("/offline-execution-jobs/search")
+    @GetMapping("/jobs")
     public List<OfflineExecutionJob> searchOfflineExecutionJobs(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam(required = false) String processName,
@@ -38,8 +39,22 @@ public class ApiController {
         return apiService.searchOfflineExecutionJobs(startTime, processName, title, releaseName, envName, categoryName);
     }
 
-    @GetMapping("/jobs/search-by-app")
+    @GetMapping("/jobs/by-application")
     public List<OfflineExecutionJob> searchJobsByApplication(@RequestParam String appName) {
         return apiService.searchJobsByApplication(appName);
+    }
+    
+    @GetMapping("/jobs/detailed")
+    public List<JobSearchResultDTO> searchJobsWithDetails(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @RequestParam(required = false) String processName,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String releaseName,
+            @RequestParam(required = false) String envName,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String appName,
+            @RequestParam(required = false) String hostname,
+            @RequestParam(required = false) String region) {
+        return apiService.searchJobsWithDetails(startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region);
     }
 }
