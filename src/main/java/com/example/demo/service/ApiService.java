@@ -13,7 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -144,7 +147,7 @@ public class ApiService {
         dto.setApplication_parent((String) row[19]);
         dto.setApplication_parent_correlation_id((String) row[20]);
         dto.setHouse_position((String) row[21]);
-        dto.setCease_date(row[22] != null ? ((java.sql.Date) row[22]).toLocalDate() : null);
+        dto.setCease_date(convertToLocalDate(row[22]));
         dto.setBusiness_application_sys_id((String) row[23]);
         dto.setApplication_tier((String) row[24]);
         dto.setApplication_product_owner((String) row[25]);
@@ -161,10 +164,10 @@ public class ApiService {
         
         // OfflineExecutionJob fields
         dto.setId(row[0] != null ? ((Number) row[0]).longValue() : null);
-        dto.setCreation_time(row[1] != null ? ((java.sql.Timestamp) row[1]).toLocalDateTime() : null);
-        dto.setStart_time(row[2] != null ? ((java.sql.Timestamp) row[2]).toLocalDateTime() : null);
-        dto.setEnd_time(row[3] != null ? ((java.sql.Timestamp) row[3]).toLocalDateTime() : null);
-        dto.setLast_distribution_time(row[4] != null ? ((java.sql.Timestamp) row[4]).toLocalDateTime() : null);
+        dto.setCreation_time(convertToLocalDateTime(row[1]));
+        dto.setStart_time(convertToLocalDateTime(row[2]));
+        dto.setEnd_time(convertToLocalDateTime(row[3]));
+        dto.setLast_distribution_time(convertToLocalDateTime(row[4]));
         dto.setFlow_id((String) row[5]);
         dto.setProcess_name((String) row[6]);
         dto.setTag_name((String) row[7]);
@@ -204,5 +207,35 @@ public class ApiService {
         dto.setBuilding((String) row[37]);
         
         return dto;
+    }
+    
+    private LocalDateTime convertToLocalDateTime(Object timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        
+        if (timestamp instanceof java.sql.Timestamp) {
+            return ((java.sql.Timestamp) timestamp).toLocalDateTime();
+        } else if (timestamp instanceof Instant) {
+            return ((Instant) timestamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        } else if (timestamp instanceof LocalDateTime) {
+            return (LocalDateTime) timestamp;
+        } else {
+            throw new IllegalArgumentException("Unsupported timestamp type: " + timestamp.getClass());
+        }
+    }
+    
+    private LocalDate convertToLocalDate(Object date) {
+        if (date == null) {
+            return null;
+        }
+        
+        if (date instanceof java.sql.Date) {
+            return ((java.sql.Date) date).toLocalDate();
+        } else if (date instanceof LocalDate) {
+            return (LocalDate) date;
+        } else {
+            throw new IllegalArgumentException("Unsupported date type: " + date.getClass());
+        }
     }
 }
