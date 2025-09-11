@@ -136,7 +136,7 @@ public class ApiService {
         // Business Application (Ownership) fields
         dto.setBusiness_application_name(convertToString(row[9]));
         dto.setCorrelation_id(convertToString(row[10]));
-        dto.setActive((Boolean) row[11]);
+        dto.setActive(convertToInteger(row[11]));
         dto.setOwning_transaction_cycle(convertToString(row[12]));
         dto.setOwning_transaction_cycle_id(convertToString(row[13]));
         dto.setResilience_category(convertToString(row[14]));
@@ -249,6 +249,22 @@ public class ApiService {
             return obj.toString();
         } else {
             return obj.toString();
+        }
+    }
+    
+    private Integer convertToInteger(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        
+        if (obj instanceof Integer) {
+            return (Integer) obj;
+        } else if (obj instanceof Number) {
+            return ((Number) obj).intValue();
+        } else if (obj instanceof Boolean) {
+            return ((Boolean) obj) ? 1 : 0;
+        } else {
+            return Integer.valueOf(obj.toString());
         }
     }
 }
