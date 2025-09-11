@@ -124,37 +124,37 @@ public class ApiService {
         
         // Application fields
         dto.setId(row[0] != null ? ((Number) row[0]).longValue() : null);
-        dto.setUuid((String) row[1]);
-        dto.setApp_name((String) row[2]);
-        dto.setBusiness_app_id((String) row[3]);
-        dto.setVersion((String) row[4]);
+        dto.setUuid(convertToString(row[1]));
+        dto.setApp_name(convertToString(row[2]));
+        dto.setBusiness_app_id(convertToString(row[3]));
+        dto.setVersion(convertToString(row[4]));
         dto.setParams_folder_id(row[5] != null ? ((Number) row[5]).intValue() : null);
         dto.setIs_express((Boolean) row[6]);
         dto.setIssharedlibrary((Boolean) row[7]);
-        dto.setDelete_status((String) row[8]);
+        dto.setDelete_status(convertToString(row[8]));
         
         // Business Application (Ownership) fields
-        dto.setBusiness_application_name((String) row[9]);
-        dto.setCorrelation_id((String) row[10]);
+        dto.setBusiness_application_name(convertToString(row[9]));
+        dto.setCorrelation_id(convertToString(row[10]));
         dto.setActive((Boolean) row[11]);
-        dto.setOwning_transaction_cycle((String) row[12]);
-        dto.setOwning_transaction_cycle_id((String) row[13]);
-        dto.setResilience_category((String) row[14]);
-        dto.setOperational_status((String) row[15]);
-        dto.setApplication_type((String) row[16]);
-        dto.setArchitecture_type((String) row[17]);
-        dto.setInstall_type((String) row[18]);
-        dto.setApplication_parent((String) row[19]);
-        dto.setApplication_parent_correlation_id((String) row[20]);
-        dto.setHouse_position((String) row[21]);
+        dto.setOwning_transaction_cycle(convertToString(row[12]));
+        dto.setOwning_transaction_cycle_id(convertToString(row[13]));
+        dto.setResilience_category(convertToString(row[14]));
+        dto.setOperational_status(convertToString(row[15]));
+        dto.setApplication_type(convertToString(row[16]));
+        dto.setArchitecture_type(convertToString(row[17]));
+        dto.setInstall_type(convertToString(row[18]));
+        dto.setApplication_parent(convertToString(row[19]));
+        dto.setApplication_parent_correlation_id(convertToString(row[20]));
+        dto.setHouse_position(convertToString(row[21]));
         dto.setCease_date(convertToLocalDate(row[22]));
-        dto.setBusiness_application_sys_id((String) row[23]);
-        dto.setApplication_tier((String) row[24]);
-        dto.setApplication_product_owner((String) row[25]);
-        dto.setSystem_architect((String) row[26]);
-        dto.setApplication_product_owner_brid((String) row[27]);
-        dto.setSystem_architect_brid((String) row[28]);
-        dto.setArchitecture_hosting((String) row[29]);
+        dto.setBusiness_application_sys_id(convertToString(row[23]));
+        dto.setApplication_tier(convertToString(row[24]));
+        dto.setApplication_product_owner(convertToString(row[25]));
+        dto.setSystem_architect(convertToString(row[26]));
+        dto.setApplication_product_owner_brid(convertToString(row[27]));
+        dto.setSystem_architect_brid(convertToString(row[28]));
+        dto.setArchitecture_hosting(convertToString(row[29]));
         
         return dto;
     }
@@ -168,43 +168,43 @@ public class ApiService {
         dto.setStart_time(convertToLocalDateTime(row[2]));
         dto.setEnd_time(convertToLocalDateTime(row[3]));
         dto.setLast_distribution_time(convertToLocalDateTime(row[4]));
-        dto.setFlow_id((String) row[5]);
-        dto.setProcess_name((String) row[6]);
-        dto.setTag_name((String) row[7]);
-        dto.setTitle((String) row[8]);
-        dto.setMajor((String) row[9]);
-        dto.setMinor((String) row[10]);
-        dto.setRelease_name((String) row[11]);
-        dto.setRelease_version((String) row[12]);
-        dto.setApplication_name((String) row[13]);
+        dto.setFlow_id(convertToString(row[5]));
+        dto.setProcess_name(convertToString(row[6]));
+        dto.setTag_name(convertToString(row[7]));
+        dto.setTitle(convertToString(row[8]));
+        dto.setMajor(convertToString(row[9]));
+        dto.setMinor(convertToString(row[10]));
+        dto.setRelease_name(convertToString(row[11]));
+        dto.setRelease_version(convertToString(row[12]));
+        dto.setApplication_name(convertToString(row[13]));
         dto.setArchitecture_id(row[14] != null ? ((Number) row[14]).intValue() : null);
         dto.setSystem_id(row[15] != null ? ((Number) row[15]).intValue() : null);
-        dto.setEnv_name((String) row[16]);
+        dto.setEnv_name(convertToString(row[16]));
         dto.setCategory_id(row[17] != null ? ((Number) row[17]).intValue() : null);
-        dto.setCategory_name((String) row[18]);
+        dto.setCategory_name(convertToString(row[18]));
         dto.setCustomer_id(row[19] != null ? ((Number) row[19]).intValue() : null);
-        dto.setCreator_username((String) row[20]);
-        dto.setManifest((String) row[21]);
+        dto.setCreator_username(convertToString(row[20]));
+        dto.setManifest(convertToString(row[21]));
         
         // Application fields
-        dto.setApp_name((String) row[22]);
-        dto.setApp_desc((String) row[23]);
-        dto.setApp_version((String) row[24]);
-        dto.setApp_uuid((String) row[25]);
+        dto.setApp_name(convertToString(row[22]));
+        dto.setApp_desc(convertToString(row[23]));
+        dto.setApp_version(convertToString(row[24]));
+        dto.setApp_uuid(convertToString(row[25]));
         
         // Server inventory fields
-        dto.setHostname((String) row[26]);
-        dto.setBusiness_line_group_company((String) row[27]);
-        dto.setBusiness_line((String) row[28]);
-        dto.setApplication_instance_environment((String) row[29]);
-        dto.setOs_name((String) row[30]);
-        dto.setServer_type((String) row[31]);
-        dto.setLifecycle((String) row[32]);
-        dto.setLifecycle_sub_status((String) row[33]);
-        dto.setRegion((String) row[34]);
-        dto.setCountry((String) row[35]);
-        dto.setCity((String) row[36]);
-        dto.setBuilding((String) row[37]);
+        dto.setHostname(convertToString(row[26]));
+        dto.setBusiness_line_group_company(convertToString(row[27]));
+        dto.setBusiness_line(convertToString(row[28]));
+        dto.setApplication_instance_environment(convertToString(row[29]));
+        dto.setOs_name(convertToString(row[30]));
+        dto.setServer_type(convertToString(row[31]));
+        dto.setLifecycle(convertToString(row[32]));
+        dto.setLifecycle_sub_status(convertToString(row[33]));
+        dto.setRegion(convertToString(row[34]));
+        dto.setCountry(convertToString(row[35]));
+        dto.setCity(convertToString(row[36]));
+        dto.setBuilding(convertToString(row[37]));
         
         return dto;
     }
@@ -236,6 +236,20 @@ public class ApiService {
             return (LocalDate) date;
         } else {
             throw new IllegalArgumentException("Unsupported date type: " + date.getClass());
+        }
+    }
+    
+    private String convertToString(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        
+        if (obj instanceof String) {
+            return (String) obj;
+        } else if (obj instanceof Number) {
+            return obj.toString();
+        } else {
+            return obj.toString();
         }
     }
 }
