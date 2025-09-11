@@ -74,7 +74,7 @@ public class ApiController {
             @RequestParam(required = false) String operationalStatus,
             @RequestParam(required = false) String architectureType,
             @RequestParam(required = false) String businessApplicationName,
-            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) Integer active,
             @RequestParam(required = false) String owningTransactionCycle,
             @RequestParam(required = false) String owningTransactionCycleId,
             @RequestParam(required = false) String resilienceCategory,

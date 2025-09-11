@@ -98,7 +98,7 @@ public class ApiService {
                                                                          String applicationType, String productOwner,
                                                                          String systemArchitect, String operationalStatus,
                                                                          String architectureType, String businessApplicationName,
-                                                                         Boolean active, String owningTransactionCycle,
+                                                                         Integer active, String owningTransactionCycle,
                                                                          String owningTransactionCycleId, String resilienceCategory, String installType,
                                                                          String applicationParent, String applicationParentCorrelationId, 
                                                                          String housePosition, String businessApplicationSysId, String applicationTier,
