@@ -25,10 +25,9 @@ public class ApiController {
 
     @GetMapping("/applications")
     public Page<Application> searchApplications(@RequestParam(required = false) String appName,
-                                                @RequestParam(required = false) String appDesc,
-                                                @RequestParam(required = false) Long id,
+                                                @RequestParam(required = false) String businessApplicationId,
                                                 Pageable pageable) {
-        return apiService.searchApplications(appName, appDesc, id, pageable);
+        return apiService.searchApplications(appName, businessApplicationId, pageable);
     }
 
     @GetMapping("/jobs")
@@ -39,8 +38,9 @@ public class ApiController {
             @RequestParam(required = false) String releaseName,
             @RequestParam(required = false) String envName,
             @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String applicationName,
             Pageable pageable) {
-        return apiService.searchOfflineExecutionJobs(startTime, processName, title, releaseName, envName, categoryName, pageable);
+        return apiService.searchOfflineExecutionJobs(startTime, processName, title, releaseName, envName, categoryName, applicationName, pageable);
     }
 
     @GetMapping("/jobs/by-application")

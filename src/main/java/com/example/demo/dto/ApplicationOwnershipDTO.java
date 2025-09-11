@@ -36,7 +36,6 @@ public class ApplicationOwnershipDTO {
     private String application_parent;
     private String application_parent_correlation_id;
     private String house_position;
-    private LocalDate cease_date;
     private String business_application_sys_id;
     private String application_tier;
     private String application_product_owner;

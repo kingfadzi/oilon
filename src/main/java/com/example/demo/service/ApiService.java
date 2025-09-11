@@ -29,23 +29,20 @@ public class ApiService {
     @Autowired
     private OfflineExecutionJobRepository offlineExecutionJobRepository;
 
-    public Page<Application> searchApplications(String appName, String appDesc, Long id, Pageable pageable) {
+    public Page<Application> searchApplications(String appName, String businessApplicationId, Pageable pageable) {
         Specification<Application> spec = Specification.where(null);
 
         if (appName != null) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("app_name"), "%" + appName + "%"));
         }
-        if (appDesc != null) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("app_desc"), "%" + appDesc + "%"));
-        }
-        if (id != null) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("Id"), id));
+        if (businessApplicationId != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("app_desc"), "%" + businessApplicationId + "%"));
         }
 
         return applicationRepository.findAll(spec, pageable);
     }
 
-    public Page<OfflineExecutionJob> searchOfflineExecutionJobs(LocalDateTime startTime, String processName, String title, String releaseName, String envName, String categoryName, Pageable pageable) {
+    public Page<OfflineExecutionJob> searchOfflineExecutionJobs(LocalDateTime startTime, String processName, String title, String releaseName, String envName, String categoryName, String applicationName, Pageable pageable) {
         Specification<OfflineExecutionJob> spec = Specification.where(null);
 
         if (startTime != null) {
@@ -65,6 +62,9 @@ public class ApiService {
         }
         if (categoryName != null) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("category_name"), "%" + categoryName + "%"));
+        }
+        if (applicationName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("application_name"), "%" + applicationName + "%"));
         }
 
         return offlineExecutionJobRepository.findAll(spec, pageable);
@@ -147,14 +147,13 @@ public class ApiService {
         dto.setApplication_parent(convertToString(row[19]));
         dto.setApplication_parent_correlation_id(convertToString(row[20]));
         dto.setHouse_position(convertToString(row[21]));
-        dto.setCease_date(convertToLocalDate(row[22]));
-        dto.setBusiness_application_sys_id(convertToString(row[23]));
-        dto.setApplication_tier(convertToString(row[24]));
-        dto.setApplication_product_owner(convertToString(row[25]));
-        dto.setSystem_architect(convertToString(row[26]));
-        dto.setApplication_product_owner_brid(convertToString(row[27]));
-        dto.setSystem_architect_brid(convertToString(row[28]));
-        dto.setArchitecture_hosting(convertToString(row[29]));
+        dto.setBusiness_application_sys_id(convertToString(row[22]));
+        dto.setApplication_tier(convertToString(row[23]));
+        dto.setApplication_product_owner(convertToString(row[24]));
+        dto.setSystem_architect(convertToString(row[25]));
+        dto.setApplication_product_owner_brid(convertToString(row[26]));
+        dto.setSystem_architect_brid(convertToString(row[27]));
+        dto.setArchitecture_hosting(convertToString(row[28]));
         
         return dto;
     }
