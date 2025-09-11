@@ -15,7 +15,7 @@ public class BusinessApplication {
     @Id
     private String business_application_name;
     private String correlation_id;
-    private Boolean active;
+    private Integer active;
     private String owning_transaction_cycle;
     private String owning_transaction_cycle_id;
     private String resilience_category;
