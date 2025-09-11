@@ -98,7 +98,7 @@ public class ApiService {
                                                                          String applicationType, String productOwner,
                                                                          String systemArchitect, String operationalStatus,
                                                                          String architectureType, String businessApplicationName,
-                                                                         Integer active, String owningTransactionCycle,
+                                                                         String active, String owningTransactionCycle,
                                                                          String owningTransactionCycleId, String resilienceCategory, String installType,
                                                                          String applicationParent, String applicationParentCorrelationId, 
                                                                          String housePosition, String businessApplicationSysId, String applicationTier,
@@ -136,7 +136,7 @@ public class ApiService {
         // Business Application (Ownership) fields
         dto.setBusiness_application_name(convertToString(row[9]));
         dto.setCorrelation_id(convertToString(row[10]));
-        dto.setActive(convertToInteger(row[11]));
+        dto.setActive(convertToString(row[11]));
         dto.setOwning_transaction_cycle(convertToString(row[12]));
         dto.setOwning_transaction_cycle_id(convertToString(row[13]));
         dto.setResilience_category(convertToString(row[14]));
