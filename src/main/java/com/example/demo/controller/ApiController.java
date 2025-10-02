@@ -7,6 +7,7 @@ import com.example.demo.model.Application;
 import com.example.demo.model.OfflineExecutionJob;
 import com.example.demo.service.ApiService;
 import com.example.demo.util.CsvUtil;
+import com.example.demo.util.StreamingCsvWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,13 +16,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
@@ -114,6 +119,7 @@ public class ApiController {
     }
     
     @GetMapping("/jobs/detailed")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> searchJobsWithDetails(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam(required = false) String processName,
@@ -127,28 +133,34 @@ public class ApiController {
             @RequestParam(required = false) String format,
             Pageable pageable) throws Exception {
 
-        if (format != null) {
-            List<JobSearchResultDTO> results = apiService.searchJobsWithDetailsUnpaginated(
+        if ("csv".equalsIgnoreCase(format)) {
+            Stream<JobSearchResultDTO> stream = apiService.streamJobsWithDetails(
                 startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
             );
 
-            if ("csv".equalsIgnoreCase(format)) {
-                String csv = CsvUtil.convertToCsv(results);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.parseMediaType("text/csv"));
-                headers.setContentDispositionFormData("attachment", "jobs-detailed.csv");
-                return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(csv);
-            } else if ("json".equalsIgnoreCase(format)) {
-                String json = objectMapper.writeValueAsString(results);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.setContentDispositionFormData("attachment", "jobs-detailed.json");
-                return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(json);
-            }
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("text/csv"));
+            headers.setContentDispositionFormData("attachment", "jobs-detailed.csv");
+
+            StreamingResponseBody responseBody = StreamingCsvWriter.streamCsv(
+                stream.iterator(), JobSearchResultDTO.class
+            );
+
+            return ResponseEntity.ok()
+                .headers(headers)
+                .body(responseBody);
+
+        } else if ("json".equalsIgnoreCase(format)) {
+            List<JobSearchResultDTO> results = apiService.searchJobsWithDetailsUnpaginated(
+                startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
+            );
+            String json = objectMapper.writeValueAsString(results);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentDispositionFormData("attachment", "jobs-detailed.json");
+            return ResponseEntity.ok()
+                .headers(headers)
+                .body(json);
         }
 
         Page<JobSearchResultDTO> page = apiService.searchJobsWithDetails(
@@ -224,6 +236,7 @@ public class ApiController {
     }
 
     @GetMapping("/deployments")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> searchDeployments(
             @RequestParam(required = false) String appName,
             @RequestParam(required = false) String envName,
@@ -235,29 +248,36 @@ public class ApiController {
             @RequestParam(required = false) String format,
             Pageable pageable) throws Exception {
 
-        if (format != null) {
-            List<DeploymentSearchResultDTO> results = apiService.searchDeploymentsUnpaginated(
+        if ("csv".equalsIgnoreCase(format)) {
+            Stream<DeploymentSearchResultDTO> stream = apiService.streamDeployments(
                 appName, envName, releaseVersion, startTime, owningTransactionCycle,
                 owningTransactionCycleId, businessAppId
             );
 
-            if ("csv".equalsIgnoreCase(format)) {
-                String csv = CsvUtil.convertToCsv(results);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.parseMediaType("text/csv"));
-                headers.setContentDispositionFormData("attachment", "deployments.csv");
-                return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(csv);
-            } else if ("json".equalsIgnoreCase(format)) {
-                String json = objectMapper.writeValueAsString(results);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.setContentDispositionFormData("attachment", "deployments.json");
-                return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(json);
-            }
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("text/csv"));
+            headers.setContentDispositionFormData("attachment", "deployments.csv");
+
+            StreamingResponseBody responseBody = StreamingCsvWriter.streamCsv(
+                stream.iterator(), DeploymentSearchResultDTO.class
+            );
+
+            return ResponseEntity.ok()
+                .headers(headers)
+                .body(responseBody);
+
+        } else if ("json".equalsIgnoreCase(format)) {
+            List<DeploymentSearchResultDTO> results = apiService.searchDeploymentsUnpaginated(
+                appName, envName, releaseVersion, startTime, owningTransactionCycle,
+                owningTransactionCycleId, businessAppId
+            );
+            String json = objectMapper.writeValueAsString(results);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentDispositionFormData("attachment", "deployments.json");
+            return ResponseEntity.ok()
+                .headers(headers)
+                .body(json);
         }
 
         Page<DeploymentSearchResultDTO> page = apiService.searchDeployments(

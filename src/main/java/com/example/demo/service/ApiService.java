@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ApiService {
@@ -148,6 +149,29 @@ public class ApiService {
         return results.stream()
             .map(this::mapToDeploymentSearchResultDTO)
             .collect(Collectors.toList());
+    }
+
+    public Stream<DeploymentSearchResultDTO> streamDeployments(String appName, String envName,
+                                                               String releaseVersion, LocalDateTime startTime,
+                                                               String owningTransactionCycle, String owningTransactionCycleId,
+                                                               String businessAppId) {
+        Stream<Object[]> stream = offlineExecutionJobRepository.streamDeployments(
+            appName, envName, releaseVersion, startTime, owningTransactionCycle,
+            owningTransactionCycleId, businessAppId
+        );
+
+        return stream.map(this::mapToDeploymentSearchResultDTO);
+    }
+
+    public Stream<JobSearchResultDTO> streamJobsWithDetails(LocalDateTime startTime, String processName,
+                                                            String title, String releaseName, String envName,
+                                                            String categoryName, String appName, String hostname,
+                                                            String region) {
+        Stream<Object[]> stream = offlineExecutionJobRepository.streamJobsWithDetails(
+            startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
+        );
+
+        return stream.map(this::mapToJobSearchResultDTO);
     }
 
     public List<Application> searchApplicationsUnpaginated(String appName, String businessApplicationId) {
