@@ -39,6 +39,12 @@
           "name": "id",
           "value": "1",
           "disabled": true
+        },
+        {
+          "name": "format",
+          "value": "csv",
+          "disabled": true,
+          "description": "Export format: json or csv"
         }
       ],
       "headers": [],
@@ -71,6 +77,12 @@
           "name": "startTime",
           "value": "",
           "disabled": true
+        },
+        {
+          "name": "format",
+          "value": "csv",
+          "disabled": true,
+          "description": "Export format: json or csv"
         }
       ],
       "headers": [],
@@ -155,6 +167,12 @@
           "name": "startTime",
           "value": "",
           "disabled": true
+        },
+        {
+          "name": "format",
+          "value": "csv",
+          "disabled": true,
+          "description": "Export format: json or csv"
         }
       ],
       "headers": [],
@@ -292,11 +310,91 @@
           "name": "sort",
           "value": "app_name,asc",
           "disabled": true
+        },
+        {
+          "name": "format",
+          "value": "csv",
+          "disabled": true,
+          "description": "Export format: json or csv"
         }
       ],
       "headers": [],
       "authentication": {},
       "metaSortKey": -1678886000000,
+      "_type": "request"
+    },
+    {
+      "_id": "req_6",
+      "parentId": "wrk_1",
+      "modified": 1678886800000,
+      "created": 1678886800000,
+      "url": "{{ base_url }}/api/deployments",
+      "name": "Search Deployments",
+      "description": "Search deployments with application and business ownership data. Includes deployments without apps for inventory gap detection.",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "appName",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "envName",
+          "value": "production",
+          "disabled": false
+        },
+        {
+          "name": "releaseVersion",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "startTime",
+          "value": "",
+          "disabled": true,
+          "description": "ISO format: 2024-09-11T10:30:00"
+        },
+        {
+          "name": "owningTransactionCycle",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "owningTransactionCycleId",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "businessAppId",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "name": "page",
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "name": "size",
+          "value": "20",
+          "disabled": true
+        },
+        {
+          "name": "sort",
+          "value": "start_time,desc",
+          "disabled": true
+        },
+        {
+          "name": "format",
+          "value": "csv",
+          "disabled": true,
+          "description": "Export format: json or csv"
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1678885900000,
       "_type": "request"
     },
     {

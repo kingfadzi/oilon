@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ApplicationOwnershipDTO;
 import com.example.demo.dto.JobSearchResultDTO;
+import com.example.demo.dto.DeploymentSearchResultDTO;
 import com.example.demo.model.Application;
 import com.example.demo.model.OfflineExecutionJob;
 import com.example.demo.repository.ApplicationRepository;
@@ -118,7 +119,117 @@ public class ApiService {
         
         return new PageImpl<>(dtoList, pageable, results.getTotalElements());
     }
-    
+
+    public Page<DeploymentSearchResultDTO> searchDeployments(String appName, String envName,
+                                                             String releaseVersion, LocalDateTime startTime,
+                                                             String owningTransactionCycle, String owningTransactionCycleId,
+                                                             String businessAppId, Pageable pageable) {
+        Page<Object[]> results = offlineExecutionJobRepository.searchDeployments(
+            appName, envName, releaseVersion, startTime, owningTransactionCycle,
+            owningTransactionCycleId, businessAppId, pageable
+        );
+
+        List<DeploymentSearchResultDTO> dtoList = results.getContent().stream()
+            .map(this::mapToDeploymentSearchResultDTO)
+            .collect(Collectors.toList());
+
+        return new PageImpl<>(dtoList, pageable, results.getTotalElements());
+    }
+
+    public List<DeploymentSearchResultDTO> searchDeploymentsUnpaginated(String appName, String envName,
+                                                                         String releaseVersion, LocalDateTime startTime,
+                                                                         String owningTransactionCycle, String owningTransactionCycleId,
+                                                                         String businessAppId) {
+        List<Object[]> results = offlineExecutionJobRepository.searchDeploymentsUnpaginated(
+            appName, envName, releaseVersion, startTime, owningTransactionCycle,
+            owningTransactionCycleId, businessAppId
+        );
+
+        return results.stream()
+            .map(this::mapToDeploymentSearchResultDTO)
+            .collect(Collectors.toList());
+    }
+
+    public List<Application> searchApplicationsUnpaginated(String appName, String businessApplicationId) {
+        Specification<Application> spec = Specification.where(null);
+
+        if (appName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("app_name"), "%" + appName + "%"));
+        }
+        if (businessApplicationId != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("app_desc"), "%" + businessApplicationId + "%"));
+        }
+
+        return applicationRepository.findAll(spec);
+    }
+
+    public List<OfflineExecutionJob> searchOfflineExecutionJobsUnpaginated(LocalDateTime startTime, String processName,
+                                                                            String title, String releaseName, String envName,
+                                                                            String categoryName, String applicationName) {
+        Specification<OfflineExecutionJob> spec = Specification.where(null);
+
+        if (startTime != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("start_time"), startTime));
+        }
+        if (processName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("process_name"), "%" + processName + "%"));
+        }
+        if (title != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), "%" + title + "%"));
+        }
+        if (releaseName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("release_name"), "%" + releaseName + "%"));
+        }
+        if (envName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("env_name"), "%" + envName + "%"));
+        }
+        if (categoryName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("category_name"), "%" + categoryName + "%"));
+        }
+        if (applicationName != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("application_name"), "%" + applicationName + "%"));
+        }
+
+        return offlineExecutionJobRepository.findAll(spec);
+    }
+
+    public List<JobSearchResultDTO> searchJobsWithDetailsUnpaginated(LocalDateTime startTime, String processName,
+                                                                      String title, String releaseName, String envName,
+                                                                      String categoryName, String appName, String hostname,
+                                                                      String region) {
+        List<Object[]> results = offlineExecutionJobRepository.searchJobsWithDetailsUnpaginated(
+            startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
+        );
+
+        return results.stream()
+            .map(this::mapToJobSearchResultDTO)
+            .collect(Collectors.toList());
+    }
+
+    public List<ApplicationOwnershipDTO> searchApplicationsWithOwnershipUnpaginated(String appName, String businessAppId,
+                                                                                     String applicationType, String productOwner,
+                                                                                     String systemArchitect, String operationalStatus,
+                                                                                     String architectureType, String businessApplicationName,
+                                                                                     String active, String owningTransactionCycle,
+                                                                                     String owningTransactionCycleId, String resilienceCategory,
+                                                                                     String installType, String applicationParent,
+                                                                                     String applicationParentCorrelationId, String housePosition,
+                                                                                     String businessApplicationSysId, String applicationTier,
+                                                                                     String applicationProductOwnerBrid, String systemArchitectBrid,
+                                                                                     String architectureHosting) {
+        List<Object[]> results = applicationRepository.searchApplicationsWithOwnershipUnpaginated(
+            appName, businessAppId, applicationType, productOwner, systemArchitect,
+            operationalStatus, architectureType, businessApplicationName, active,
+            owningTransactionCycle, owningTransactionCycleId, resilienceCategory, installType,
+            applicationParent, applicationParentCorrelationId, housePosition, businessApplicationSysId,
+            applicationTier, applicationProductOwnerBrid, systemArchitectBrid, architectureHosting
+        );
+
+        return results.stream()
+            .map(this::mapToApplicationOwnershipDTO)
+            .collect(Collectors.toList());
+    }
+
     private ApplicationOwnershipDTO mapToApplicationOwnershipDTO(Object[] row) {
         ApplicationOwnershipDTO dto = new ApplicationOwnershipDTO();
         
@@ -256,7 +367,7 @@ public class ApiService {
         if (obj == null) {
             return null;
         }
-        
+
         if (obj instanceof Integer) {
             return (Integer) obj;
         } else if (obj instanceof Number) {
@@ -266,5 +377,38 @@ public class ApiService {
         } else {
             return Integer.valueOf(obj.toString());
         }
+    }
+
+    private DeploymentSearchResultDTO mapToDeploymentSearchResultDTO(Object[] row) {
+        DeploymentSearchResultDTO dto = new DeploymentSearchResultDTO();
+
+        // OfflineExecutionJob (deployment) fields
+        dto.setId(row[0] != null ? ((Number) row[0]).longValue() : null);
+        dto.setCreation_time(convertToLocalDateTime(row[1]));
+        dto.setStart_time(convertToLocalDateTime(row[2]));
+        dto.setEnd_time(convertToLocalDateTime(row[3]));
+        dto.setFlow_id(convertToString(row[4]));
+        dto.setProcess_name(convertToString(row[5]));
+        dto.setTitle(convertToString(row[6]));
+        dto.setRelease_name(convertToString(row[7]));
+        dto.setRelease_version(convertToString(row[8]));
+        dto.setEnv_name(convertToString(row[9]));
+        dto.setApplication_name(convertToString(row[10]));
+        dto.setCreator_username(convertToString(row[11]));
+
+        // Application fields (nullable - for deployments without apps)
+        dto.setApp_name(convertToString(row[12]));
+        dto.setApp_desc(convertToString(row[13]));
+        dto.setApp_version(convertToString(row[14]));
+        dto.setApp_uuid(convertToString(row[15]));
+
+        // Business Application (Ownership) fields (nullable)
+        dto.setBusiness_application_name(convertToString(row[16]));
+        dto.setCorrelation_id(convertToString(row[17]));
+        dto.setOwning_transaction_cycle(convertToString(row[18]));
+        dto.setOwning_transaction_cycle_id(convertToString(row[19]));
+        dto.setBusiness_app_id(convertToString(row[20]));
+
+        return dto;
     }
 }
