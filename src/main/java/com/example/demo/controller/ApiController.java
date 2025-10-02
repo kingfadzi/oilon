@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
@@ -131,36 +132,33 @@ public class ApiController {
             @RequestParam(required = false) String hostname,
             @RequestParam(required = false) String region,
             @RequestParam(required = false) String format,
+            HttpServletResponse response,
             Pageable pageable) throws Exception {
 
         if ("csv".equalsIgnoreCase(format)) {
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"jobs-detailed.csv\"");
+
             Stream<JobSearchResultDTO> stream = apiService.streamJobsWithDetails(
                 startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
             );
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("text/csv"));
-            headers.setContentDispositionFormData("attachment", "jobs-detailed.csv");
 
             StreamingResponseBody responseBody = StreamingCsvWriter.streamCsv(
                 stream.iterator(), JobSearchResultDTO.class
             );
 
-            return ResponseEntity.ok()
-                .headers(headers)
-                .body(responseBody);
+            responseBody.writeTo(response.getOutputStream());
+            return null;
 
         } else if ("json".equalsIgnoreCase(format)) {
+            response.setContentType("application/json");
+            response.setHeader("Content-Disposition", "attachment; filename=\"jobs-detailed.json\"");
+
             List<JobSearchResultDTO> results = apiService.searchJobsWithDetailsUnpaginated(
                 startTime, processName, title, releaseName, envName, categoryName, appName, hostname, region
             );
             String json = objectMapper.writeValueAsString(results);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setContentDispositionFormData("attachment", "jobs-detailed.json");
-            return ResponseEntity.ok()
-                .headers(headers)
-                .body(json);
+            return ResponseEntity.ok(json);
         }
 
         Page<JobSearchResultDTO> page = apiService.searchJobsWithDetails(
@@ -246,38 +244,35 @@ public class ApiController {
             @RequestParam(required = false) String owningTransactionCycleId,
             @RequestParam(required = false) String businessAppId,
             @RequestParam(required = false) String format,
+            HttpServletResponse response,
             Pageable pageable) throws Exception {
 
         if ("csv".equalsIgnoreCase(format)) {
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"deployments.csv\"");
+
             Stream<DeploymentSearchResultDTO> stream = apiService.streamDeployments(
                 appName, envName, releaseVersion, startTime, owningTransactionCycle,
                 owningTransactionCycleId, businessAppId
             );
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("text/csv"));
-            headers.setContentDispositionFormData("attachment", "deployments.csv");
-
             StreamingResponseBody responseBody = StreamingCsvWriter.streamCsv(
                 stream.iterator(), DeploymentSearchResultDTO.class
             );
 
-            return ResponseEntity.ok()
-                .headers(headers)
-                .body(responseBody);
+            responseBody.writeTo(response.getOutputStream());
+            return null;
 
         } else if ("json".equalsIgnoreCase(format)) {
+            response.setContentType("application/json");
+            response.setHeader("Content-Disposition", "attachment; filename=\"deployments.json\"");
+
             List<DeploymentSearchResultDTO> results = apiService.searchDeploymentsUnpaginated(
                 appName, envName, releaseVersion, startTime, owningTransactionCycle,
                 owningTransactionCycleId, businessAppId
             );
             String json = objectMapper.writeValueAsString(results);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setContentDispositionFormData("attachment", "deployments.json");
-            return ResponseEntity.ok()
-                .headers(headers)
-                .body(json);
+            return ResponseEntity.ok(json);
         }
 
         Page<DeploymentSearchResultDTO> page = apiService.searchDeployments(
